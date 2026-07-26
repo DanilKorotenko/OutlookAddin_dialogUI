@@ -13,17 +13,6 @@ function getDialogUrl()
     return "https://danilkorotenko.github.io/OutlookAddin_dialogUI/dialog.html";
 }
 
-function completeBlocked()
-{
-    if (completed)
-    {
-        return;
-    }
-    completed = true;
-    event.completed({ allowEvent: false });
-}
-
-
 function validateMessage(event)
 {
     console.log("Start validation stream");
@@ -36,7 +25,7 @@ function validateMessage(event)
             if (asyncResult.status === Office.AsyncResultStatus.Failed)
             {
                 console.error("Failed to open dialog: " + asyncResult.error.message);
-                completeBlocked();
+                event.completed({ allowEvent: false });
                 return;
             }
 
@@ -45,12 +34,12 @@ function validateMessage(event)
             dialog.addEventHandler(Office.EventType.DialogMessageReceived, function ()
             {
                 dialog.close();
-                completeBlocked();
+                event.completed({ allowEvent: false });
             });
 
             dialog.addEventHandler(Office.EventType.DialogEventReceived, function ()
             {
-                completeBlocked();
+                event.completed({ allowEvent: false });
             });
         });
 }
