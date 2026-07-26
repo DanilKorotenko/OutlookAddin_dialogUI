@@ -10,11 +10,7 @@ Office.initialize = function (reason)
 
 function getDialogUrl()
 {
-    try {
-        return new URL("dialog.html", window.location.href).href;
-    } catch (e) {
-        return "https://danilkorotenko.github.io/OutlookAddin_dialogUI/dialog.html";
-    }
+    return "https://danilkorotenko.github.io/OutlookAddin_dialogUI/dialog.html";
 }
 
 function completeBlocked()
