@@ -7,37 +7,60 @@ Office.initialize = function (reason)
     mailboxItem = Office.context.mailbox.item;
 }
 
-function validateMessage(event)
+function showBlockedDialog(onClosed)
 {
-    console.log("Start validation stream");
-
     Office.context.ui.displayDialogAsync(
         "https://danilkorotenko.github.io/OutlookAddin_dialogUI/dialog.html",
-        // { height: 30, width: 30, displayInIframe: true },
-        { height: 30, width: 30, promptBeforeOpen: false, displayInIframe: true, },
+        { height: 30, width: 30, promptBeforeOpen: false, displayInIframe: true },
         function (asyncResult)
         {
             if (asyncResult.status === Office.AsyncResultStatus.Failed)
             {
                 console.error("Failed to open dialog: " + asyncResult.error.message);
-                event.completed({ allowEvent: false });
+                if (onClosed)
+                {
+                    onClosed();
+                }
                 return;
             }
 
-
             const dialog = asyncResult.value;
+            let closed = false;
+
+            function finish()
+            {
+                if (closed)
+                {
+                    return;
+                }
+                closed = true;
+                if (onClosed)
+                {
+                    onClosed();
+                }
+            }
 
             dialog.addEventHandler(Office.EventType.DialogMessageReceived, function ()
             {
                 console.log("Dialog event DialogMessageReceived");
                 dialog.close();
-                event.completed({ allowEvent: false });
+                finish();
             });
 
             dialog.addEventHandler(Office.EventType.DialogEventReceived, function ()
             {
                 console.log("Dialog event DialogEventReceived");
-                event.completed({ allowEvent: false });
+                finish();
             });
         });
+}
+
+function validateMessage(event)
+{
+    console.log("Start validation stream");
+
+    showBlockedDialog(function ()
+    {
+        event.completed({ allowEvent: false });
+    });
 }
