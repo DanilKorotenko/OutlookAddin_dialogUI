@@ -23,6 +23,8 @@ function validateMessage(event)
                 return;
             }
 
+            event.completed({ allowEvent: false });
+
             const dialog = asyncResult.value;
 
             dialog.addEventHandler(Office.EventType.DialogMessageReceived, function ()
@@ -36,6 +38,4 @@ function validateMessage(event)
                 console.log("Dialog event DialogEventReceived");
             });
         });
-    
-    event.completed({ allowEvent: false });
 }
