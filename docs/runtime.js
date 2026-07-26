@@ -20,10 +20,10 @@ function validateMessage(event)
             if (asyncResult.status === Office.AsyncResultStatus.Failed)
             {
                 console.error("Failed to open dialog: " + asyncResult.error.message);
+                event.completed({ allowEvent: false });
                 return;
             }
 
-            event.completed({ allowEvent: false });
 
             const dialog = asyncResult.value;
 
@@ -31,11 +31,13 @@ function validateMessage(event)
             {
                 console.log("Dialog event DialogMessageReceived");
                 dialog.close();
+                event.completed({ allowEvent: false });
             });
 
             dialog.addEventHandler(Office.EventType.DialogEventReceived, function ()
             {
                 console.log("Dialog event DialogEventReceived");
+                event.completed({ allowEvent: false });
             });
         });
 }
