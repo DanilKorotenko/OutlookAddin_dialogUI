@@ -14,7 +14,7 @@ function validateMessage(event)
     Office.context.ui.displayDialogAsync(
         "https://danilkorotenko.github.io/OutlookAddin_dialogUI/dialog.html",
         // { height: 30, width: 30, displayInIframe: true },
-        { height: 30, width: 30, },
+        { height: 30, width: 30, promptBeforeOpen: false, displayInIframe: true, },
         function (asyncResult)
         {
             if (asyncResult.status === Office.AsyncResultStatus.Failed)
