@@ -1,5 +1,4 @@
 let mailboxItem = null;
-let completed = false; 
 
 Office.initialize = function (reason)
 {
@@ -8,18 +7,14 @@ Office.initialize = function (reason)
     mailboxItem = Office.context.mailbox.item;
 }
 
-function getDialogUrl()
-{
-    return "https://danilkorotenko.github.io/OutlookAddin_dialogUI/dialog.html";
-}
-
 function validateMessage(event)
 {
     console.log("Start validation stream");
 
     Office.context.ui.displayDialogAsync(
-        getDialogUrl(),
-        { height: 30, width: 30, displayInIframe: true },
+        "https://danilkorotenko.github.io/OutlookAddin_dialogUI/dialog.html",
+        // { height: 30, width: 30, displayInIframe: true },
+        { height: 30, width: 30, },
         function (asyncResult)
         {
             if (asyncResult.status === Office.AsyncResultStatus.Failed)
